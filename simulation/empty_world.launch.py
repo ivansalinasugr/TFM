@@ -26,7 +26,7 @@ def generate_launch_description():
 
     # Paso 1: Ejecutar script Python que genera el mundo con actores
     generate_world_cmd = ExecuteProcess(
-        cmd=['python3', '/home/ivan/generate_world.py', '--actors', num_actors, '--test', test],
+        cmd=['python3', '/TFM/simulation/generate_world.py', '--actors', num_actors, '--test', test],
         output='screen'
     )
 
@@ -70,7 +70,7 @@ def generate_launch_description():
         executable='spawn_entity.py',
         arguments=[
             '-entity', 'walls',
-            '-file', '/home/ivan/building_editor_models/walls/model.sdf',
+            '-file', '/TFM/SDFs/walls.sdf',
             '-x', '0.0',
             '-y', '0.0',
             '-z', '0.0'
