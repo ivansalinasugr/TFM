@@ -78,6 +78,20 @@ def generate_launch_description():
         output='screen'
     )
 
+    # Paso 7: Spawnear cámara aérea (para visualizar en wandb)
+    spawn_camera_cmd = Node(
+        package='gazebo_ros',
+        executable='spawn_entity.py',
+        arguments=[
+            '-entity', 'aerial_camera',
+            '-file', '/home/ivan/.gazebo/models/aerial_camera_2/model.sdf',
+            '-x', '0',
+            '-y', '0',
+            '-z', '0'
+        ],
+        output='screen'
+    )
+
     # Ensamblar todo
     ld = LaunchDescription()
     ld.add_action(DeclareLaunchArgument('num_actors', default_value='1'))
@@ -88,5 +102,6 @@ def generate_launch_description():
     ld.add_action(robot_state_publisher_cmd)
     ld.add_action(spawn_turtlebot_cmd)
     ld.add_action(spawn_walls_cmd)
+    ld.add_action(spawn_camera_cmd)
 
     return ld
