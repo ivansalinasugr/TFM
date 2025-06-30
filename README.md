@@ -44,6 +44,7 @@ La simulación se desarrolla con **ROS 2 Humble**, **Gazebo Classic** y el model
    ```bash
    pip install -r requirements.txt
    ```
+4. Copiar los archivos .world en la carpeta `turtlebot3_ws/src/turtlebot3_simulations/turtlebot3_gazebo/worlds/`, correspondiente a los archivos descargados del TurtleBot3
 
 ---
 
