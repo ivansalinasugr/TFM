@@ -25,7 +25,7 @@ La simulación se desarrolla con **ROS 2 Humble**, **Gazebo Classic** y el model
 * **Plugin `gazebo_sfm_plugin` modificado**:
   [https://github.com/robotics-upo/gazebo\_sfm\_plugin/tree/galactic](https://github.com/robotics-upo/gazebo_sfm_plugin/tree/galactic)
 
-> ⚠️ El plugin debe ser recompilado (`make`) tras reemplazar los archivos `PedestrianSFMPlugin.cpp` y `PedestrianSFMPlugin.h` por los incluidos en este repositorio. Estos permiten detectar colisiones entre el robot y los actores humanos.
+> ⚠️ El plugin debe ser recompilado (`make`) tras reemplazar los archivos `PedestrianSFMPlugin.cpp` y `PedestrianSFMPlugin.h` por los incluidos en este repositorio (en la carpeta `plugin`). Estos permiten detectar colisiones entre el robot y los actores humanos.
 
 ---
 
@@ -44,18 +44,18 @@ La simulación se desarrolla con **ROS 2 Humble**, **Gazebo Classic** y el model
    ```bash
    pip install -r requirements.txt
    ```
-4. Copiar los archivos .world en la carpeta `turtlebot3_ws/src/turtlebot3_simulations/turtlebot3_gazebo/worlds/`, correspondiente a los archivos descargados del TurtleBot3
+4. Copiar los archivos `worlds/*.world` en la carpeta `turtlebot3_ws/src/turtlebot3_simulations/turtlebot3_gazebo/worlds/`, correspondiente a los archivos descargados del TurtleBot3
 
 ---
 
 ## Archivos de simulación
 
-* `objective.sdf`: cilindro rojo que representa (sólo por estética visual) el **objetivo** que el robot debe alcanzar.
-* `cube.sdf`: cubos estáticos que actúan como **obstáculos fijos** en el entorno.
-* `walls.sdf`: contiene únicamente las **paredes del entorno**.
-* `empty_world_base_train.world`: archivo principal del mundo de Gazebo, para entrenamiento, sobre el cual se insertan dinámicamente los actores.
-* `empty_world_base_test.world`: archivo principal del mundo de Gazebo, para evaluación (es decir, con mesas, sillas, sofás), sobre el cual se insertan dinámicamente los actores.
-* `empty_world.world`: archivo resultante del mundo de Gazebo, donde se han insertado los actores, ya sea para entrenamiento o para evaluación.
+* `SDFs/objective.sdf`: cilindro rojo que representa (sólo por estética visual) el **objetivo** que el robot debe alcanzar.
+* `SDFs/cube.sdf`: cubos estáticos que actúan como **obstáculos fijos** en el entorno.
+* `SDFs/walls.sdf`: contiene únicamente las **paredes del entorno**.
+* `worlds/empty_world_base_train.world`: archivo principal del mundo de Gazebo, para entrenamiento, sobre el cual se insertan dinámicamente los actores.
+* `worlds/empty_world_base_test.world`: archivo principal del mundo de Gazebo, para evaluación (es decir, con mesas, sillas, sofás), sobre el cual se insertan dinámicamente los actores.
+* `empty_world.world`: archivo generado tras agregar las personas al mundo de Gazebo (este archivo se genera automáticamente al llamar a `empty_world.launch.py`).
 
 ---
 
@@ -64,7 +64,7 @@ La simulación se desarrolla con **ROS 2 Humble**, **Gazebo Classic** y el model
 ### Parámetros importantes
 
 * `num_actors`: número de humanos simulados.
-* `test`: indica si el entorno es para entrenamiento (`False`) o evaluación (`True`). Para el entorno de entrenamiento solo hay paredes (y obstáculos fijos creados dinámicamente durante el entrenamiento) mientras que para el entorno de evaluación, hay paredes, mesas, sillas y sofás.
+* `test`: indica si el entorno es para entrenamiento (`0`) o evaluación (`1`). Para el entorno de entrenamiento solo hay paredes (y obstáculos fijos creados dinámicamente durante el entrenamiento) mientras que para el entorno de evaluación, hay paredes, mesas, sillas y sofás.
 
 ### 1. Entrenamiento
 
@@ -73,12 +73,12 @@ source /opt/ros/humble/setup.bash
 source ~/ros2_ws/install/setup.bash
 export TURTLEBOT3_MODEL=waffle
 
-ros2 launch turtlebot3_gazebo empty_world.launch.py num_actors:=4 test:=False
+ros2 launch turtlebot3_gazebo empty_world.launch.py num_actors:=4 test:=0
 
-python3 entrenamiento.py --num_timesteps 100000
+python3 code/train.py --num_timesteps 100000
 ```
 
-> La política entrenada se almacena en un archivo `.zip`.
+> La política entrenada se almacena en un archivo `.zip`. La política entrenada de este trabajo está en `model policy/model_trained_policy.zip`
 
 ### 2. Evaluación
 
@@ -87,9 +87,9 @@ source /opt/ros/humble/setup.bash
 source ~/ros2_ws/install/setup.bash
 export TURTLEBOT3_MODEL=waffle
 
-ros2 launch turtlebot3_gazebo empty_world.launch.py num_actors:=4 test:=True
+ros2 launch turtlebot3_gazebo empty_world.launch.py num_actors:=4 test:=1
 
-python3 evaluacion.py --num_episodes 20
+python3 code/evaluation.py --num_episodes 20
 ```
 
 > Los resultados de evaluación se guardan automáticamente en un archivo `.jsonl`.
@@ -98,12 +98,12 @@ python3 evaluacion.py --num_episodes 20
 
 ## Plugin de actores humanos
 
-Este proyecto utiliza el plugin `gazebo_sfm_plugin` para simular personas que siguen un modelo de comportamiento social. El script `generate_world.py` se ejecuta automáticamente al lanzar el entorno con `ros2 launch`, y se encarga de crear el mundo (`empty_world.world`) para insertar a las personas simuladas.
+Este proyecto utiliza el plugin `gazebo_sfm_plugin` para simular personas que siguen un modelo de comportamiento social. El script `simulation/generate_world.py` se ejecuta automáticamente al lanzar el entorno con `ros2 launch`, y se encarga de crear el mundo (`empty_world.world`) para insertar a las personas simuladas.
 
 Ejemplo:
 
 ```bash
-ros2 launch turtlebot3_gazebo empty_world.launch.py num_actors:=5 test:=False
+ros2 launch turtlebot3_gazebo empty_world.launch.py num_actors:=5 test:=0
 ```
 
 Este ejemplo añadiría 5 actores, junto con sus trayectorias de movimiento, al entorno de simulación.
