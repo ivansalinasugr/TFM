@@ -1,0 +1,16 @@
+cv_bridge==3.2.1
+gazebo_msgs==3.9.0
+geometry_msgs==4.8.0
+gymnasium==1.1.1
+imageio==2.37.0
+matplotlib==3.5.1
+nav2_msgs==1.1.18
+nav_msgs==4.8.0
+numpy==1.21.5
+rclpy==3.3.16
+Requests==2.32.4
+sensor_msgs==4.8.0
+stable_baselines3==2.6.0
+std_srvs==4.8.0
+torch==2.6.0
+wandb==0.20.1
