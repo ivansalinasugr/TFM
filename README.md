@@ -52,9 +52,9 @@ La simulación se desarrolla con **ROS 2 Humble**, **Gazebo Classic** y el model
 * `objective.sdf`: cilindro rojo que representa (sólo por estética visual) el **objetivo** que el robot debe alcanzar.
 * `cube.sdf`: cubos estáticos que actúan como **obstáculos fijos** en el entorno.
 * `walls.sdf`: contiene únicamente las **paredes del entorno**.
-* `environment.sdf`: incluye paredes y otros **elementos estáticos adicionales** (mesas, sillas, sofás).
-* `empty_world_base.world`: archivo principal del mundo de Gazebo, sobre el cual se insertan dinámicamente los actores.
-* `empty_world.world`: archivo resultante del mundo de Gazebo, donde se han insertado los actores.
+* `empty_world_base_train.world`: archivo principal del mundo de Gazebo, para entrenamiento, sobre el cual se insertan dinámicamente los actores.
+* `empty_world_base_test.world`: archivo principal del mundo de Gazebo, para evaluación (es decir, con mesas, sillas, sofás), sobre el cual se insertan dinámicamente los actores.
+* `empty_world.world`: archivo resultante del mundo de Gazebo, donde se han insertado los actores, ya sea para entrenamiento o para evaluación.
 
 ---
 
@@ -97,7 +97,7 @@ python3 evaluacion.py --num_episodes 20
 
 ## Plugin de actores humanos
 
-Este proyecto utiliza el plugin `gazebo_sfm_plugin` para simular personas que siguen un modelo de comportamiento social. El script `generate_world.py` se ejecuta automáticamente al lanzar el entorno con `ros2 launch`, y se encarga de crear el mundo (`empty_world.world`) en base a `empty_world_base.world` para insertar a las personas simuladas.
+Este proyecto utiliza el plugin `gazebo_sfm_plugin` para simular personas que siguen un modelo de comportamiento social. El script `generate_world.py` se ejecuta automáticamente al lanzar el entorno con `ros2 launch`, y se encarga de crear el mundo (`empty_world.world`) para insertar a las personas simuladas.
 
 Ejemplo:
 
